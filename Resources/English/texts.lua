@@ -54,11 +54,13 @@ texts = {
   ["resetController"] = "Revert controller position",
   ["vcoXIn"] = "VCO X input",
   ["vcoYIn"] = "VCO Y input",
+  ["propertyname_VCOXTrim"] = "VCO X trim",
+  ["propertyname_VCOYTrim"] = "VCO Y trim",
   ["vcoXOut"] = "VCO X output",
   ["vcoYOut"] = "VCO Y output",
  }
  
- properties(texts,{ "x", "y", "A", "B", "C", "D", "source", "level" } )
+ properties(texts,{ "x", "y", "A", "B", "C", "D", "source", "level","xTrim","yTrim" } )
  cvs(texts,{ "X", "Y", "A", "B", "C", "D", "level", "mode"})
  vco(texts,{ "active", "freeze", "zero", "frequency", "width", "height", "pattern", 
              "start1", "start2", "start3", "start4" })

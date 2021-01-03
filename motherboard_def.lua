@@ -73,7 +73,7 @@ function makeGUIProperties()
       propName("VCOheight"),
       propName("VCOheight")
       }
-    }, 
+    },
   }
   
   for n=1,4 do
@@ -264,7 +264,7 @@ function ChannelCVOut(channel)
 end
 
 function ChannelCVIn(channel) 
-  local tags = { "level", "mode", "X", "Y" }
+  local tags = { "level", "X", "Y" }
   local table={}
   for index, tag in pairs(tags) do
     local name=tag..channel.."In"
@@ -315,8 +315,7 @@ for n = 1,4 do
     cv_inputs[k]=v
   end
 end
-cv_inputs["vcoXIn"] = cvIn("vcoXIn")
-cv_inputs["vcoYIn"] = cvIn("vcoYIn")
+
 
 
 cv_outputs = {}

@@ -179,14 +179,6 @@ function QUEGBackGlobal()
       { path = "SharedAudioJack", frames = 3},
     }
   end
-  table["vcoXIn"] = {
-      offset = {275,890},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["vcoYIn"] = {
-      offset = {525,890},
-      { path = "SharedCVJack", frames = 3},
-    }
   table["vcoXOut"] = {
       offset = {230,1160},
       { path = "SharedCVJack", frames = 3},
@@ -213,10 +205,6 @@ function QUEGBack(n)
     }
   table["level"..n.."In"] = {
       offset = {x0,y0+150},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["mode"..n.."In"] = {
-      offset = {x0+150,y0+150},
       { path = "SharedCVJack", frames = 3},
     }
   table["A"..n.."Out"] = {

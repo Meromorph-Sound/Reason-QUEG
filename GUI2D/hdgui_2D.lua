@@ -99,7 +99,7 @@ function makeWidgets()
     utils.widget("momentary_button","VCOzero"),
     utils.knob("VCOfrequency"),
     utils.knob("VCOwidth"),
-    utils.knob("VCOheight")
+    utils.knob("VCOheight"),
   }
   
   local visibility = {
@@ -131,6 +131,7 @@ function makeWidgets()
     --  value = "/custom_properties/level"..n
     --})
     table.insert(widgets,utils.knob("level"..n))
+
     
     table.insert(widgets,utils.radio("source"..n,0,"vco"..n))
     table.insert(widgets,utils.radio("source"..n,1,"manual"..n))
@@ -252,10 +253,12 @@ end
   
 
     
-local tagsIn={ "vcoXIn", "vcoYIn" }
-allCVIn(w,tagsIn,{"level", "mode", "X", "Y"})
+local tagsIn={}
+allCVIn(w,tagsIn,{"level", "X", "Y"})
 local tagsOut={ "vcoXOut", "vcoYOut" }
 allCVOut(w,tagsOut,{"A", "B", "C", "D", "X", "Y"})
+
+
 
 
 back = jbox.panel { 
