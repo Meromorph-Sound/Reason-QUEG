@@ -10,6 +10,7 @@
 
 #include "base.hpp"
 
+
 namespace queg {
 
 class AudioChannel {
@@ -34,20 +35,16 @@ public:
 
 class ChannelCVs {
 
-
-	TJBox_ObjectRef xOutCV;
-	TJBox_ObjectRef yOutCV;
-
-
+	TJBox_ObjectRef xPtr;
+	TJBox_ObjectRef yPtr;
 
 public:
-	ChannelCVs(const char name);
+	ChannelCVs(const uint8 channel);
+	ChannelCVs() : xPtr(0), yPtr(0) {};
 	virtual ~ChannelCVs() = default;
 
-
-
-	void x(const float32);
-	void y(const float32);
+	void x(const float32 value) const;
+	void y(const float32 value) const;
 };
 
 

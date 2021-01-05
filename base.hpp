@@ -16,6 +16,8 @@
 
 namespace queg {
 
+using int8 = TJBox_Int8;
+using uint8 = TJBox_UInt8;
 using int32 = TJBox_Int32;
 using uint32 = TJBox_UInt32;
 using int64 = TJBox_Int64;

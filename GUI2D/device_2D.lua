@@ -28,11 +28,7 @@ KNOB_H=290
 STICK_W=400
 STICK_H=400
 
-function centred(n,y,width)
-  local offset = MARGIN_LEFT+n*BLOCK_WIDTH
-  local x0 = math.floor((BLOCK_WIDTH-width)/2)
-  return { offset+x0, y }
-end
+
 
 function QUEG(n)
 local x0 = 1000 + 650*(n-1)
@@ -77,95 +73,9 @@ local x0 = 1000 + 650*(n-1)
   return queg
 end
 
-function makePopup(name, path, nFrames, xy1, xy2 )
-  local tab = {}
-  tab[name] = {
-    offset = xy1,
-    { path = name, frames = nFrames }
-  }
-  tab[name.."_button"] = {
-    offset = xy2,
-    path = { "UpDownButton", frames = 2 }
-  }
-  return tab
-end
 
-function VCOFront()
-  local table={
-    VCOactive = {
-      offset = { 1045, 1685 },
-      { path = "button", frames=2 }
-    },
-    VCOfreeze = {
-      offset = { 1245, 1580 },
-      { path = "button", frames=2 }
-    },
-    VCOzero = {
-      offset = { 1245, 1790 },
-      { path = "button", frames=2 }
-    },
-    VCOfrequency = {
-      offset={ 1555, 1605 },
-      { path = "Knob_58_64frames", frames=64 }
-    },
-    VCOwidth = {
-      offset={ 1905, 1605 },
-      { path = "Knob_58_64frames", frames=64 }
-    },
-    VCOheight = {
-      offset={ 2255, 1605 },
-      { path = "Knob_58_64frames", frames=64 }
-    }, 
-    VCOpattern = {
-      offset = { 2595, 1670 },
-      { path = "VCOPatterns_8frames", frames=8 }
-    },
-    VCOpattern_updown = {
-      offset = { 2820, 1670 },
-      { path = "upDown", frames=3 }
-    },
---    VCOstartsBG = {
---      offset = { 2915, 1525 },
---      { path = "starts", frames = 1 }
---    },
-    VCOstart1 = {
-      offset = { 3005, 1585 },
-      { path = "VCOOrder_4frames", frames=4 }
-    },
-    VCOstart_updown1 = {
-      offset = { 3125, 1585 },
-      { path = "upDown", frames=3 }
-    },
-    VCOstart2 = {
-      offset = { 3265, 1585 },
-      { path = "VCOOrder_4frames", frames=4 }
-    },
-    VCOstart_updown2 = {
-      offset = { 3385, 1585 },
-      { path = "upDown", frames=3 }
-    },
-    VCOstart3 = {
-      offset = { 3265, 1785 },
-      { path = "VCOOrder_4frames", frames=4 }
-    },
-    VCOstart_updown3 = {
-      offset = { 3385, 1785 },
-      { path = "upDown", frames=3 }
-    },
-    VCOstart4 = {
-      offset = { 3005, 1785 },
-      { path = "VCOOrder_4frames", frames=4 }
-    },
-    VCOstart_updown4 = {
-      offset = { 3125, 1785 },
-      { path = "upDown", frames=3 }
-    }
-        
-  }
-  return table
-end
 
-function QUEGBackGlobal() 
+function QUEGBack() 
   local table={}
   local tags={ "A", "B", "C", "D" }
   for n = 1,4 do
@@ -179,58 +89,28 @@ function QUEGBackGlobal()
       { path = "SharedAudioJack", frames = 3},
     }
   end
+  
   table["vcoXOut"] = {
-      offset = {230,1160},
+      offset = {960,645},
       { path = "SharedCVJack", frames = 3},
     }
   table["vcoYOut"] = {
-      offset = {480,1160},
+      offset = {1110,645},
       { path = "SharedCVJack", frames = 3},
     }
-  return table
-end
-
-function QUEGBack(n)
-  local table={}
-  local x0 = 960+500*(n-1)
-  local y0 = 450
-  local dY = 440
-  table["X"..n.."In"] = {
-      offset = {x0,y0},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["Y"..n.."In"] = {
-      offset = {x0+150,y0},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["level"..n.."In"] = {
-      offset = {x0,y0+150},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["A"..n.."Out"] = {
-      offset = {x0,y0+dY},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["B"..n.."Out"] = {
-      offset = {x0+150,y0+dY},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["C"..n.."Out"] = {
-      offset = {x0,y0+dY+150},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["D"..n.."Out"] = {
-      offset = {x0+150,y0+dY+150},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["X"..n.."Out"] = {
-      offset = {x0,y0+dY+300},
-      { path = "SharedCVJack", frames = 3},
-    }
-  table["Y"..n.."Out"] = {
-      offset = {x0+150,y0+dY+300},
-      { path = "SharedCVJack", frames = 3},
-    }
+  for n=1,4 do
+    local x0 = 960+500*(n-1)
+    local y0 = 360
+    local dY = 440
+    table["X"..n.."Out"] = {
+        offset = {x0,y0},
+        { path = "SharedCVJack", frames = 3},
+      }
+    table["Y"..n.."Out"] = {
+        offset = {x0+150,y0},
+       { path = "SharedCVJack", frames = 3},
+      }
+  end
   return table
 end
   
@@ -251,7 +131,24 @@ front = {
 	QUEG(2),
 	QUEG(3),
 	QUEG(4),
-	VCOFront()
+	{
+    VCOactive = { offset = { 1045, 1685 }, { path = "button", frames=2 }},
+    VCOfreeze = { offset = { 1245, 1580 }, { path = "button", frames=2 }},
+    VCOzero   = { offset = { 1245, 1790 }, { path = "button", frames=2 }},
+    VCOfrequency = { offset={ 1555, 1605 }, { path = "Knob_58_64frames", frames=64 }},
+    VCOwidth  =    { offset={ 1905, 1605 }, { path = "Knob_58_64frames", frames=64 }},
+    VCOheight =    { offset={ 2255, 1605 }, { path = "Knob_58_64frames", frames=64 }}, 
+    VCOpattern =   { offset={ 2595, 1670 }, { path = "VCOPatterns_8frames", frames=8 }},
+    VCOpattern_updown = { offset={ 2820, 1670 }, { path = "upDown", frames=3 }},
+    VCOstart1        = { offset = { 3005, 1585 },{ path = "VCOOrder_4frames", frames=4 }},
+    VCOstart_updown1 = { offset = { 3125, 1585 },{ path = "upDown", frames=3 }},
+    VCOstart2        = { offset = { 3265, 1585 },{ path = "VCOOrder_4frames", frames=4 }},
+    VCOstart_updown2 = { offset = { 3385, 1585 },{ path = "upDown", frames=3 }},
+    VCOstart3        = { offset = { 3265, 1785 },{ path = "VCOOrder_4frames", frames=4 }},
+    VCOstart_updown3 = { offset = { 3385, 1785 },{ path = "upDown", frames=3 }},
+    VCOstart4        = { offset = { 3005, 1785 },{ path = "VCOOrder_4frames", frames=4 }},
+    VCOstart_updown4 = { offset = { 3125, 1785 },{ path = "upDown", frames=3 }}   
+  }
 }
 back = { 
 	Bg = {
@@ -265,11 +162,7 @@ back = {
     offset = { 3300, 75},
     { path = "Tape_Horizontal_1frames", frames = 1 },
   },
-  QUEGBackGlobal(),
-  QUEGBack(1),
-  QUEGBack(2),
-  QUEGBack(3),
-  QUEGBack(4),
+  QUEGBack()
 }
 folded_front = { 
 	Bg = {

@@ -31,6 +31,7 @@ QUEG::QUEG() : vco()  {
 	for(auto i=0;i<4;i++) {
 		inputs[i]=JBox_GetMotherboardObjectRef(append(buffer,"/audio_inputs/in",'1',i));
 		outputs[i]=JBox_GetMotherboardObjectRef(append(buffer,"/audio_outputs/out",'A',i));
+		cvs[i]=ChannelCVs((uint8)i);
 	}
 
 	ins = new float32[BUFFER_SIZE];
@@ -161,6 +162,7 @@ void QUEG::process() {
 	for(Channel channel=0;channel<4;channel++) {
 		auto length = read(channel,ins);
 		auto info=infos[channel];
+
 		if(length > 0 && !info.isBypassed()) {
 			auto point = (info.isManual()) ? info.xy : vco(channel);
 			auto scales = Scaler(point);
@@ -171,8 +173,14 @@ void QUEG::process() {
 				auto scale = scl*level; //get<float32>(OUT_FRACTION[outC],channel)*level;
 				auto out=outs[outC];
 				std::transform(ins,ins+length,out,out,[scale](float32 in,float32 out) { return out + scale*in; });
+
 			}
+
 		}
+		auto cv=cvs[channel];
+		cv.x(info.x());
+		cv.y(info.y());
+
 	}
 	for(auto i=0;i<4;i++) write(i,BUFFER_SIZE,outs[i]);
 }

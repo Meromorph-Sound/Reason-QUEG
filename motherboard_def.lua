@@ -1,21 +1,12 @@
 format_version = "3.0"
 
-function name(tag,n)
-  n = n or ""
-  return tag..n
+
+
+function propName(tag) 
+  return jbox.ui_text("propertyname_"..tag)
 end
 
-function propName(tag,n) 
-  return jbox.ui_text("propertyname_"..name(tag,n))
-end
 
-function makeN(n,item)
-  local out={}
-  for i = 1, n do
-    table.insert(out,item)
-  end
-  return out
-end
 
 function makeGUIProperties()
   local props = {
@@ -81,7 +72,7 @@ function makeGUIProperties()
      property_tag = 60+n,
      default = n-1,
      steps = 4,
-     ui_name = propName("VCOstart",n),
+     ui_name = propName("VCOstart"..n),
      ui_type = jbox.ui_selector { 
       jbox.ui_text("A"), 
       jbox.ui_text("B"), 
@@ -89,59 +80,36 @@ function makeGUIProperties()
       jbox.ui_text("D")
       }
     } 
-  end
-  for n = 1,4 do
+
     local base=(n-1)*10
-    props[name("x",n)] = jbox.number {
+    props["x"..n] = jbox.number {
       property_tag = 1+base,
       default = 0.5,
-      ui_name = propName("x",n),
+      ui_name = propName("x"..n),
       ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}}),
     }
-    props[name("y",n)] = jbox.number {
+    props["y"..n] = jbox.number {
       property_tag = 2+base,
       default = 0.5,
-      ui_name = propName("y",n),
+      ui_name = propName("y"..n),
       ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}}),    
     }
-    props[name("level",n)] = jbox.number {
+    props["level"..n] = jbox.number {
      property_tag = 3+base,
      default = 0.5,
-     ui_name = propName("level",n),
+     ui_name = propName("level"..n),
      ui_type = jbox.ui_percent({decimals=2}),
     }
-    props[name("source",n)] = jbox.number {
+    props["source"..n] = jbox.number {
      property_tag = 4+base,
      default = 1,
      steps = 3,
-     ui_name = propName("source",n),
+     ui_name = propName("source"..n),
      ui_type = jbox.ui_selector { jbox.ui_text("VCO"), jbox.ui_text("manual"), jbox.ui_text("bypass") }
     }
---    props[name("A",n)] = jbox.number { 
---      property_tag = 6+base,
---      default = 0.5,
---      ui_name = propName("A",n),
---      ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
---    } 
---    props[name("B",n)] = jbox.number { 
---      property_tag = 7+base,
---      default = 0.5,
---      ui_name = propName("B",n),
---      ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
---    } 
---    props[name("C",n)] = jbox.number { 
---      property_tag = 8+base,
---      default = 0.5,
---      ui_name = propName("C",n),
---      ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
---    } 
---    props[name("D",n)] = jbox.number { 
---      property_tag = 9+base,
---      default = 0.5,
---      ui_name = propName("D",n),
---      ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
---    }
+
   end
+  
   jbox.trace("Made GUI properties:")
   for k,v in pairs(props) do
     jbox.trace(k.." : "..tostring(v))
@@ -153,28 +121,28 @@ function makeRTProperties()
   local props = {}
   for n = 1,4 do
     local base=(n-1)*10
-    props[name("A",n)] = jbox.number { 
+    props["A"..n] = jbox.number { 
       property_tag = 6+base,
       default = 0.5,
-      ui_name = propName("A",n),
+      ui_name = propName("A"..n),
       ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
     } 
-    props[name("B",n)] = jbox.number { 
+    props["B"..n] = jbox.number { 
       property_tag = 7+base,
       default = 0.5,
-      ui_name = propName("B",n),
+      ui_name = propName("B"..n),
       ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
     } 
-    props[name("C",n)] = jbox.number { 
+    props["C"..n] = jbox.number { 
       property_tag = 8+base,
       default = 0.5,
-      ui_name = propName("C",n),
+      ui_name = propName("C"..n),
       ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
     } 
-    props[name("D",n)] = jbox.number { 
+    props["D"..n] = jbox.number { 
       property_tag = 9+base,
       default = 0.5,
-      ui_name = propName("D",n),
+      ui_name = propName("D"..n),
       ui_type = jbox.ui_linear({min=0, max=1, units={{decimals=4}}})
     }
   end
@@ -201,40 +169,36 @@ custom_properties = jbox.property_set{
 	},
 }
 
-function makeMIDI(base,properties)
-  local out={}
-  local cc=base
-  for channel = 1,4 do
-    for k,tag in pairs(properties) do
-      out[base] = "/custom_properties/"..name(tag,channel)
-      base=base+1
-    end
-  end
-  return out
-end
 
-function makeRemote(properties)
-  local out = {}
-  for k, tag in pairs(properties) do
-    for channel = 1, 4 do
-      local nm=name(tag,channel)
-      local pn=propName(tag,channel)
-      out["/custom_properties/"..nm] = {
-        internal_name=nm,
-        short_ui_name=propName(tag,channel),
-        shortest_ui_name=propName(tag.."_shortest",channel)
-      }
-    end
-  end
-  return out
-end
+
+
     
+local midi={}
+local cc=39
+local props = {"level","x","y"}
+for channel = 1,4 do
+  for k,tag in pairs(props) do
+    midi[cc] = "/custom_properties/"..tag..channel
+    cc=cc+1
+  end
+end
+midi_implementation_chart = { midi_cc_chart = midi }
 
-midi_implementation_chart = {
-  midi_cc_chart = makeMIDI(39,{"level","x","y"})
-}
 
-remote_implementation_chart = makeRemote({"level","x","y"})
+local remote = {}
+local remotes = {"level","x","y"}
+for k, tag in pairs(remotes) do
+  for channel = 1, 4 do
+    local name=tag..channel
+    local pn=propName(name)
+    remote["/custom_properties/"..name] = {
+      internal_name=name,
+      short_ui_name=propName(name),
+      shortest_ui_name=propName(tag.."_shortest"..channel)
+    }
+  end
+end
+remote_implementation_chart = remote
 
 
 function audioIn(tag) 
@@ -244,55 +208,6 @@ end
 function audioOut(tag) 
   return jbox.audio_output{ ui_name = jbox.ui_text(tag) }
 end
-
-function cvIn(tag) 
-  return jbox.cv_input{ ui_name = jbox.ui_text(tag) }
-end
-
-function cvOut(tag) 
-  return jbox.cv_output{ ui_name = jbox.ui_text(tag) }
-end
-
-function ChannelCVOut(channel)
-  local tags = { "A", "B", "C", "D", "X", "Y" }
-  local table={}
-  for index, tag in pairs(tags) do
-    local name=tag..channel.."Out"
-    table[name] = cvOut(name)
-  end
-  return table
-end
-
-function ChannelCVIn(channel) 
-  local tags = { "level", "X", "Y" }
-  local table={}
-  for index, tag in pairs(tags) do
-    local name=tag..channel.."In"
-    table[name] = cvIn(name)
-  end
-  return table
-end
-
-function CVOut(table)
-  for n = 1,4 do
-    local temp=ChannelCVOut(n)
-    for k, v in temp do
-      table[k]=v
-    end
-  end
-  return table
-end
-
-function CVIn(table)
-  for n = 1,4 do
-    local temp=ChannelCVIn(n)
-    for k, v in temp do
-      table[k]=v
-    end
-  end
-  return table
-end
-  
 
 audio_inputs = {
   in1 = audioIn("audioInput1"),
@@ -309,24 +224,17 @@ audio_outputs = {
 }
 
 cv_inputs = {}
-for n = 1,4 do
-  local temp=ChannelCVIn(n)
-  for k, v in pairs(temp) do
-    cv_inputs[k]=v
-  end
-end
-
-
-
 cv_outputs = {}
-for n = 1,4 do
-  local temp=ChannelCVOut(n)
-  for k, v in pairs(temp) do
-    cv_outputs[k]=v
-  end
-end
-cv_outputs["vcoXOut"] = cvOut("vcoXOut")
-cv_outputs["vcoYOut"] = cvOut("vcoYOut")
+local tags = { "X", "Y" }
+  for index, tag in pairs(tags) do
+    for channel=1,4 do
+      local name=tag..channel.."Out"
+      cv_outputs[name] = jbox.cv_output{ ui_name = jbox.ui_text(name) }
+    end
+ end
+
+cv_outputs["vcoXOut"] = jbox.cv_output{ ui_name = jbox.ui_text("vcoXOut") }
+cv_outputs["vcoYOut"] = jbox.cv_output{ ui_name = jbox.ui_text("vcoYOut") }
 
 
 

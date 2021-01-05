@@ -7,6 +7,7 @@
 
 #include "Channel.hpp"
 
+
 namespace queg {
 
 AudioChannel::AudioChannel(const char *name,const Direction dir) : direction(dir) {
@@ -38,30 +39,27 @@ uint32 AudioChannel::read(float32 *buffer) {
 		}
 	}
 
-	// template is
-	//
-	// cv_outputs/SNOut
-	//
-	// where S = A,B,C,D,X,Y and n = 1,2,3,4
-	//
-	// so
-	//             0123456788012
-	// template = "cv_outputs/__Out"
-	// template[11]=s
-	// template[12]='1'+n
 
-	ChannelCVs::ChannelCVs(const char name) {
+	const char * const cvTemplate="/cv_outputs/__Out";
 
-		char *xxtmpl="/cv_outputs/X_Out";
-		xxtmpl[13]=name;
-		xOutCV=JBox_GetMotherboardObjectRef(xxtmpl);
-		char *yytmpl="/cv_outputs/Y_Out";
-		yytmpl[13]=name;
-		yOutCV=JBox_GetMotherboardObjectRef(yytmpl);
+	TJBox_ObjectRef getRef(const uint8 channel,const char name) {
+		char tmpl[20];
+		strcpy(tmpl,cvTemplate);
+		tmpl[12]=name;
+		tmpl[13]='1'+channel;
+		return JBox_GetMotherboardObjectRef(tmpl);
 	}
 
+	ChannelCVs::ChannelCVs(const uint8 channel) {
+		xPtr=getRef(channel,'X');
+		yPtr=getRef(channel,'Y');
+	}
 
+	void ChannelCVs::x(const float32 value) const {
+		JBox_StoreMOMPropertyAsNumber(xPtr,kJBox_CVOutputValue,value);
+	}
+	void ChannelCVs::y(const float32 value) const {
+			JBox_StoreMOMPropertyAsNumber(yPtr,kJBox_CVOutputValue,value);
+		}
 
-	void ChannelCVs::x(const float32 v) { JBox_StoreMOMPropertyAsNumber(xOutCV,kJBox_CVOutputValue,v); }
-	void ChannelCVs::y(const float32 v) { JBox_StoreMOMPropertyAsNumber(yOutCV,kJBox_CVOutputValue,v); }
 } /* namespace queg */

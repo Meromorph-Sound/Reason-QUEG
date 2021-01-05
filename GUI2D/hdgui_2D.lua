@@ -20,21 +20,8 @@ function utils.copy(array)
   return out
 end
 
-function utils.makeCV(name,direction) 
-  local func = "cv_"..direction.."_socket"
- return jbox[func] {
-      graphics = { node = name },
-      socket = "/cv_"..direction.."s/"..name
-    }
-end
 
-function utils.allCVNames(tab,suffix,list) 
-    for n = 1, 4 do
-      for k, tag in pairs(list) do
-        table.insert(tab,tag..n..suffix)
-      end
-    end
-end
+
 
 
 
@@ -88,7 +75,7 @@ function utils.updown(property,node,extras)
 end
 
 
-function makeWidgets()
+
   local widgets = {
     jbox.device_name { graphics = { node = "deviceName" } },
     utils.widget("sequence_fader","onoffbypass","builtin_onoffbypass", { handle_size = 0 }),
@@ -110,9 +97,7 @@ function makeWidgets()
     local prop="VCOstart"..n
     table.insert(widgets, utils.updown(prop,"VCOstart_updown"..n,visibility))
     table.insert(widgets, utils.knob(prop,visibility))
-  end
-
-  for n=1, 4 do
+ 
     table.insert(widgets,jbox.custom_display {
       graphics = {
         node = "controller"..n 
@@ -126,13 +111,9 @@ function makeWidgets()
       draw_function = "drawController",
       gesture_function = "handleControllerInput"
     })
-    --table.insert(widgets,jbox.analog_knob {
-    --  graphics = { node = "level"..n },
-    --  value = "/custom_properties/level"..n
-    --})
+
     table.insert(widgets,utils.knob("level"..n))
 
-    
     table.insert(widgets,utils.radio("source"..n,0,"vco"..n))
     table.insert(widgets,utils.radio("source"..n,1,"manual"..n))
     table.insert(widgets,utils.radio("source"..n,2,"bypass"..n))
@@ -141,68 +122,12 @@ function makeWidgets()
     table.insert(widgets,utils.sequence("C"..n))
     table.insert(widgets,utils.sequence("D"..n))
   end
-  return widgets
-end
+
 
 front = jbox.panel { 
 	graphics = { node = "Bg" },
-	widgets = makeWidgets()
+	widgets = widgets
 }
-
-function allCVNames(tab,suffix,list) 
-    for n = 1, 4 do
-      for k, tag in pairs(list) do
-        table.insert(tab,tag..n..suffix)
-      end
-    end
-end
-
---function makeCVOut(tab,names) 
---  for k, name in pairs(names) do
---    local cv = jbox.cv_output_socket {
---      graphics = { node = name },
---      socket = "/cv_outputs/"..name
---    }
---    table.insert(tab,cv)
---  end
---end
-
---function makeCVs(tab,names,direction) 
---  local func = "cv_"..direction.."_socket"
---  for k, name in pairs(names) do
---    local cv = jbox[func] {
---      graphics = { node = name },
---      socket = "/cv_"..direction.."s/"..name
---    }
---    table.insert(tab,cv)
---  end
---end
-
---function makeCVIn(tab,names) 
---  for k, name in pairs(names) do
---    local cv = jbox.cv_input_socket {
---      graphics = { node = name },
---      socket = "/cv_inputs/"..name
---    }
---    table.insert(tab,cv)
---  end
---end
-
-function allCVIn(tab,base,names)
-  utils.allCVNames(base,"In",names)
-  for k, name in pairs(base) do
-    table.insert(tab,utils.makeCV(name,"input"))
-  end
-  --makeCVs(tab,base,"input")
-end
-
-function allCVOut(tab,base,names)
-  utils.allCVNames(base,"Out",names)
-  for k, name in pairs(base) do
-    table.insert(tab,utils.makeCV(name,"output"))
-  end
-  --makeCVs(tab,base,"output")
-end
 
 local w = {
     jbox.placeholder { graphics = { node = "Placeholder" } },
@@ -221,45 +146,23 @@ for k,v in pairs(channels) do
       socket = "/audio_outputs/out"..v
     })
 end
---    jbox.audio_input_socket {
---      graphics = { node = "SignalInput2" },
---      socket = "/audio_inputs/in2",
---    },
---    jbox.audio_input_socket {
---      graphics = { node = "SignalInput3" },
---      socket = "/audio_inputs/in3",
---    },
---    jbox.audio_input_socket {
---      graphics = { node = "SignalInput4" },
---      socket = "/audio_inputs/in4",
---    },
---    jbox.audio_output_socket {
---      graphics = { node = "SignalOutputA" },
---      socket = "/audio_outputs/outA",
---    },
---    jbox.audio_output_socket {
---      graphics = { node = "SignalOutputB" },
---      socket = "/audio_outputs/outB",
---    },
---    jbox.audio_output_socket {
---      graphics = { node = "SignalOutputC" },
---      socket = "/audio_outputs/outC",
---    },
---    jbox.audio_output_socket {
---      graphics = { node = "SignalOutputD" },
---      socket = "/audio_outputs/outD",
---    }
---  }
-  
 
-    
-local tagsIn={}
-allCVIn(w,tagsIn,{"level", "X", "Y"})
-local tagsOut={ "vcoXOut", "vcoYOut" }
-allCVOut(w,tagsOut,{"A", "B", "C", "D", "X", "Y"})
+function makeCV(name) 
+ return jbox.cv_output_socket {
+      graphics = { node = name },
+      socket = "/cv_outputs/"..name
+    }
+end
 
+table.insert(w,makeCV("vcoXOut"))
+table.insert(w,makeCV("vcoYOut"))
 
-
+local cvOut = {"X", "Y"}
+for k, tag in pairs(cvOut) do
+  for n=1,4 do
+    table.insert(w,makeCV(tag..n.."Out"))  
+  end
+end
 
 back = jbox.panel { 
 	graphics = { node = "Bg" },

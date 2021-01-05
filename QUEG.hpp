@@ -6,6 +6,7 @@
 #include "base.hpp"
 #include "tags.hpp"
 #include "vco.hpp"
+#include "Channel.hpp"
 #include <type_traits>
 
 
@@ -78,6 +79,8 @@ private:
 	TJBox_ObjectRef props;
 	TJBox_ObjectRef inputs[4];
 	TJBox_ObjectRef outputs[4];
+
+	ChannelCVs cvs[4];
 
 	float32 *ins;
 	float32 *outs[4];
