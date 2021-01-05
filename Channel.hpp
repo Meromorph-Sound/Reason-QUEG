@@ -32,6 +32,24 @@ public:
 	void write(const uint32 length,float32 *buffer);
 };
 
+class ChannelCVs {
+
+
+	TJBox_ObjectRef xOutCV;
+	TJBox_ObjectRef yOutCV;
+
+
+
+public:
+	ChannelCVs(const char name);
+	virtual ~ChannelCVs() = default;
+
+
+
+	void x(const float32);
+	void y(const float32);
+};
+
 
 
 } /* namespace queg */

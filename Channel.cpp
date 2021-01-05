@@ -38,4 +38,30 @@ uint32 AudioChannel::read(float32 *buffer) {
 		}
 	}
 
+	// template is
+	//
+	// cv_outputs/SNOut
+	//
+	// where S = A,B,C,D,X,Y and n = 1,2,3,4
+	//
+	// so
+	//             0123456788012
+	// template = "cv_outputs/__Out"
+	// template[11]=s
+	// template[12]='1'+n
+
+	ChannelCVs::ChannelCVs(const char name) {
+
+		char *xxtmpl="/cv_outputs/X_Out";
+		xxtmpl[13]=name;
+		xOutCV=JBox_GetMotherboardObjectRef(xxtmpl);
+		char *yytmpl="/cv_outputs/Y_Out";
+		yytmpl[13]=name;
+		yOutCV=JBox_GetMotherboardObjectRef(yytmpl);
+	}
+
+
+
+	void ChannelCVs::x(const float32 v) { JBox_StoreMOMPropertyAsNumber(xOutCV,kJBox_CVOutputValue,v); }
+	void ChannelCVs::y(const float32 v) { JBox_StoreMOMPropertyAsNumber(yOutCV,kJBox_CVOutputValue,v); }
 } /* namespace queg */

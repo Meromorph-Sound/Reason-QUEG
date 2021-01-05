@@ -33,7 +33,9 @@ local simpleNotes = {
   "VCOpattern",
   "builtin_onoffbypass"
 }
-local cvChangeNotes = {
+local cvChannelNotes = {
+}
+local cvSimpleNotes = {
 }
 
 local notes = {}
@@ -48,7 +50,16 @@ for k,v in pairs(simpleNotes) do
     table.insert(notes,propName(v))
   end
   
- for k,v in pairs(cvChangeNotes) do
+  for k,v in pairs(cvChannelNotes) do
+    for n = 1,4 do
+      local name=cvInputName(v)..n.."In"
+      table.insert(notes,name)
+      table.insert(notes,name.."/connected")
+    end
+  end
+  
+ for k,v in pairs(cvSimpleNotes) do
+    local name=cvInputName(v).."In"
     table.insert(notes,cvInputName(v))
     table.insert(notes,cvInputName(v).."/connected")
   end  
