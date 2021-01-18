@@ -58,6 +58,16 @@ texts = {
   ["propertyname_VCOYTrim"] = "VCO Y trim",
   ["vcoXOut"] = "VCO X output",
   ["vcoYOut"] = "VCO Y output",
+  ["vcoFms"] = "^0ms",
+  ["vcoFs"] = "^0s",
+  ["vcoSquareCW"] = "Square Clockwise",
+  ["vcoSquareCCW"] = "Square Counterclockwise",
+  ["vcoLR"] = "Left - Right",
+  ["vcoUD"] = "Up - Down",
+  ["vcoX"] = "Diagonal cross",
+  ["vcoTLBR"] = "Diagonal TL - BR",
+  ["vcoTRBL"] = "Diagonal TR - BL",
+  ["vcoD"] = "Diamond"
  }
  
  properties(texts,{ "x", "y", "A", "B", "C", "D", "source", "level","xTrim","yTrim" } )

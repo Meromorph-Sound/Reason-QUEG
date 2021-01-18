@@ -6,7 +6,15 @@ function propName(tag)
   return jbox.ui_text("propertyname_"..tag)
 end
 
+function vcoFreqD2G(value) 
+  local decade =  10^(value*3) 
+  return decade * 7.5e-2
+end
 
+function vcoFreqG2D(value)
+  local decade = math.max(1,math.min(1000,value/(7.5e-2)))
+  return math.log10(decade)/3
+end
 
 function makeGUIProperties()
   local props = {
@@ -35,7 +43,16 @@ function makeGUIProperties()
      property_tag = 54,
      default = 0,
      ui_name = propName("VCOfrequency"),
-     ui_type = jbox.ui_percent({decimals=2}),
+     ui_type = jbox.ui_nonlinear {
+      data_to_gui = vcoFreqD2G,
+      gui_to_data = vcoFreqG2D,
+      units = {
+        min_text = "75ms",
+        max_text = "75s",
+        { decimals = 3, min_value = 0, { template = jbox.ui_text("vcoFms") } },
+        { decimals = 2, min_value = 0.375, { template = jbox.ui_text("vcoFs"), base = 1000 } },
+      } 
+     } -- jbox.ui_percent({decimals=2}),
     },
     VCOwidth = jbox.number {
      property_tag = 55,
@@ -55,14 +72,14 @@ function makeGUIProperties()
      steps = 8,
      ui_name = propName("VCOpattern"),
      ui_type = jbox.ui_selector { 
-      propName("VCOheight"), 
-      propName("VCOheight"), 
-      propName("VCOheight"), 
-      propName("VCOheight"), 
-      propName("VCOheight"), 
-      propName("VCOheight"),
-      propName("VCOheight"),
-      propName("VCOheight")
+      jbox.ui_text("vcoSquareCW"), 
+      jbox.ui_text("vcoSquareCCW"), 
+      jbox.ui_text("vcoLR"), 
+      jbox.ui_text("vcoUD"), 
+      jbox.ui_text("vcoX"), 
+      jbox.ui_text("vcoTLBR"),
+      jbox.ui_text("vcoTRBL"),
+      jbox.ui_text("vcoD")
       }
     },
   }
