@@ -39,6 +39,13 @@ function makeGUIProperties()
      ui_name = propName("VCOzero"),
      ui_type = jbox.ui_selector { jbox.UI_TEXT_ON, jbox.UI_TEXT_OFF }
     },
+    VCOdecade = jbox.number {
+      property_tag = 80,
+      default = 0,
+      steps = 3,
+      ui_name = propName("VCOfrequency"),
+      ui_type = jbox.ui_selector { jbox.ui_text("vco0"),jbox.ui_text("vco1"),jbox.ui_text("vco2") }
+    },
     VCOfrequency = jbox.number {
      property_tag = 54,
      default = 0,
@@ -207,7 +214,7 @@ local midi={}
 local cc=39
 local props = {"source","level","x","y",}
 local vcoProps = { "VCOactive", "VCOfreeze", "VCOzero", "VCOfrequency", 
-                   "VCOwidth", "VCOheight", "VCOPattern"}
+                   "VCOwidth", "VCOheight", "VCOpattern"}
 for channel = 1,4 do
   for k,tag in pairs(props) do
     midi[cc] = "/custom_properties/"..tag..channel

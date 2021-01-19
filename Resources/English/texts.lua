@@ -69,13 +69,16 @@ texts = {
   ["vcoX"] = "Diagonal cross",
   ["vcoTLBR"] = "Diagonal TL - BR",
   ["vcoTRBL"] = "Diagonal TR - BL",
-  ["vcoD"] = "Diamond"
+  ["vcoD"] = "Diamond",
+  ["vco0"] = "75ms",
+  ["vco1"] = "750ms",
+  ["vco2"] = "7.5s"
  }
  
  properties(texts,{ "x", "y", "A", "B", "C", "D", "source", "level","xTrim","yTrim" } )
  cvs(texts,{ "X", "Y", "A", "B", "C", "D", "level", "mode"})
  vco(texts,{ "active", "freeze", "zero", "frequency", "width", "height", "pattern", 
              "start1", "start2", "start3", "start4" })
- insert(texts,{ ["x_shortest"] = "X", ["y_shortest"] = "Y", ["level_shortest"] = "L"} )
+ insert(texts,{ ["source_shortest"] = "SR", ["x_shortest"] = "X", ["y_shortest"] = "Y", ["level_shortest"] = "L"} )
  
  
