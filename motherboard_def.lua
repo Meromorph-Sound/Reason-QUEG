@@ -8,11 +8,11 @@ end
 
 function vcoFreqD2G(value) 
   local decade =  10^(value*3) 
-  return decade * 7.5e-2
+  return decade * 75
 end
 
 function vcoFreqG2D(value)
-  local decade = math.max(1,math.min(1000,value/(7.5e-2)))
+  local decade = math.max(1,math.min(1000,value/75))
   return math.log10(decade)/3
 end
 
@@ -47,10 +47,23 @@ function makeGUIProperties()
       data_to_gui = vcoFreqD2G,
       gui_to_data = vcoFreqG2D,
       units = {
-        min_text = "75ms",
-        max_text = "75s",
-        { decimals = 3, min_value = 0, { template = jbox.ui_text("vcoFms") } },
-        { decimals = 2, min_value = 0.375, { template = jbox.ui_text("vcoFs"), base = 1000 } },
+        min_text = jbox.ui_text("vcoMin"),
+        max_text = jbox.ui_text("vcoMax"),
+        { 
+          decimals = 0, 
+          min_value = 0, 
+          unit = { template = jbox.ui_text("vcoFms") } 
+        },
+        { 
+          decimals = 2,
+          min_value = 1000, 
+          unit = { template = jbox.ui_text("vcoFs"), base = 1000 } 
+        },
+        { 
+          decimals = 1,
+          min_value = 10000, 
+          unit = { template = jbox.ui_text("vcoFs"), base = 1000 } 
+        },
       } 
      } -- jbox.ui_percent({decimals=2}),
     },
@@ -192,19 +205,24 @@ custom_properties = jbox.property_set{
     
 local midi={}
 local cc=39
-local props = {"level","x","y"}
+local props = {"source","level","x","y",}
+local vcoProps = { "VCOactive", "VCOfreeze", "VCOzero", "VCOfrequency", 
+                   "VCOwidth", "VCOheight", "VCOPattern"}
 for channel = 1,4 do
   for k,tag in pairs(props) do
     midi[cc] = "/custom_properties/"..tag..channel
     cc=cc+1
   end
 end
+for k,tag in pairs(vcoProps) do
+    midi[cc] = "/custom_properties/"..tag
+    cc=cc+1
+end
 midi_implementation_chart = { midi_cc_chart = midi }
 
 
 local remote = {}
-local remotes = {"level","x","y"}
-for k, tag in pairs(remotes) do
+for k, tag in pairs(props) do
   for channel = 1, 4 do
     local name=tag..channel
     local pn=propName(name)
