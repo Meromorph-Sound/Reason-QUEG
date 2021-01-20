@@ -6,6 +6,8 @@ function propName(tag)
   return jbox.ui_text("propertyname_"..tag)
 end
 
+
+
 function vcoFreqD2G(value) 
   local decade =  10^(value*3) 
   return decade * 75
@@ -39,13 +41,13 @@ function makeGUIProperties()
      ui_name = propName("VCOzero"),
      ui_type = jbox.ui_selector { jbox.UI_TEXT_ON, jbox.UI_TEXT_OFF }
     },
-    VCOdecade = jbox.number {
-      property_tag = 80,
-      default = 0,
-      steps = 3,
-      ui_name = propName("VCOfrequency"),
-      ui_type = jbox.ui_selector { jbox.ui_text("vco0"),jbox.ui_text("vco1"),jbox.ui_text("vco2") }
-    },
+--    VCOdecade = jbox.number {
+--      property_tag = 80,
+--      default = 0,
+--      steps = 3,
+--      ui_name = propName("VCOfrequency"),
+--      ui_type = jbox.ui_selector { jbox.ui_text("vco0"),jbox.ui_text("vco1"),jbox.ui_text("vco2") }
+--    },
     VCOfrequency = jbox.number {
      property_tag = 54,
      default = 0,
@@ -239,6 +241,13 @@ for k, tag in pairs(props) do
       shortest_ui_name=propName(tag.."_shortest"..channel)
     }
   end
+end
+for k, tag in pairs(vcoProps) do
+  remote["/custom_properties/"..tag] = {
+      internal_name=tag,
+      short_ui_name=propName(tag.."_shortest"),
+      shortest_ui_name=propName(tag.."_shortest")
+  }
 end
 remote_implementation_chart = remote
 

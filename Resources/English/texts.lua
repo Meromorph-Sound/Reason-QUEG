@@ -33,6 +33,12 @@ function vco(table,tags)
     table["propertyname_VCO"..tag] = "VCO "..tag
   end
 end
+
+function vco_insert(table,tags) 
+  for tag, text in pairs(tags) do
+      table["propertyname_"..tag] = text
+  end
+end
   
 
 texts = {
@@ -79,6 +85,18 @@ texts = {
  cvs(texts,{ "X", "Y", "A", "B", "C", "D", "level", "mode"})
  vco(texts,{ "active", "freeze", "zero", "frequency", "width", "height", "pattern", 
              "start1", "start2", "start3", "start4" })
- insert(texts,{ ["source_shortest"] = "SR", ["x_shortest"] = "X", ["y_shortest"] = "Y", ["level_shortest"] = "L"} )
+ insert(texts,{ ["source_shortest"] = "SR", 
+                ["x_shortest"] = "X", 
+                ["y_shortest"] = "Y", 
+                ["level_shortest"] = "L" })
+ vco_insert(texts, {
+                ["VCOactive_shortest"] = "VA",
+                ["VCOfreeze_shortest"] = "VH",
+                ["VCOzero_shortest"] = "VZ",
+                ["VCOfrequency_shortest"] = "VF",
+                ["VCOwidth_shortest"] = "VW",
+                ["VCOheight_shortest"] = "VH",
+                ["VCOpattern_shortest"] = "VS" 
+} )
  
  

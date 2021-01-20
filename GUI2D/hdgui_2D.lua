@@ -84,7 +84,7 @@ end
      utils.toggle("VCOactive"),
     utils.toggle("VCOfreeze"),
     utils.widget("momentary_button","VCOzero"),
-    utils.widget("sequence_fader","VCOdecade","VCOdecade"),
+    -- utils.widget("sequence_fader","VCOdecade","VCOdecade"),
     utils.knob("VCOfrequency"),
     utils.knob("VCOwidth"),
     utils.knob("VCOheight"),

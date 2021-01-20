@@ -135,7 +135,7 @@ front = {
     VCOactive = { offset = { 1045, 1685 }, { path = "button", frames=2 }},
     VCOfreeze = { offset = { 1245, 1580 }, { path = "button", frames=2 }},
     VCOzero   = { offset = { 1245, 1790 }, { path = "button", frames=2 }},
-    VCOdecade = { offset = { 1455, 1605 }, { path = "Fader_31_3frames", frames=3 }},
+    -- VCOdecade = { offset = { 1455, 1605 }, { path = "Fader_31_3frames", frames=3 }},
     VCOfrequency = { offset={ 1555, 1605 }, { path = "Knob_58_64frames", frames=64 }},
     VCOwidth  =    { offset={ 1905, 1605 }, { path = "Knob_58_64frames", frames=64 }},
     VCOheight =    { offset={ 2255, 1605 }, { path = "Knob_58_64frames", frames=64 }}, 
